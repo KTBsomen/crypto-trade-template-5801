@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import { Command, Menu } from "lucide-react";
+import { Command, Menu, Sun, Moon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { useTheme } from "next-themes";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,9 +42,10 @@ const Navigation = () => {
   };
 
   const navItems = [
-    { name: "Features", href: "#features", onClick: () => scrollToSection('features') },
-    { name: "Prices", href: "#pricing", onClick: () => scrollToSection('pricing') },
-    { name: "Testimonials", href: "#testimonials", onClick: () => scrollToSection('testimonials') },
+    { name: "How It Works", href: "#workflow", onClick: () => scrollToSection('workflow') },
+    { name: "Pricing", href: "#pricing", onClick: () => scrollToSection('pricing') },
+    { name: "API Docs", href: "#api-docs", onClick: () => scrollToSection('api-docs') },
+    { name: "Scenarios", href: "#scenarios", onClick: () => scrollToSection('scenarios') },
   ];
 
   return (
@@ -57,7 +60,7 @@ const Navigation = () => {
         <nav className="flex items-center justify-between h-full">
           <div className="flex items-center gap-2">
             <Command className="w-5 h-5 text-primary" />
-            <span className="font-bold text-base">CryptoTrade</span>
+            <span className="font-bold text-base">InvoicePDF</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -77,12 +80,20 @@ const Navigation = () => {
                 {item.name}
               </a>
             ))}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="glass"
+            >
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
             <Button 
               onClick={() => scrollToSection('cta')}
               size="sm"
               className="button-gradient"
             >
-              Start Trading
+              Get Started
             </Button>
           </div>
 
@@ -112,14 +123,22 @@ const Navigation = () => {
                       {item.name}
                     </a>
                   ))}
+                  <Button
+                    variant="outline"
+                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    className="glass mt-4"
+                  >
+                    {theme === "dark" ? <Sun className="h-4 w-4 mr-2" /> : <Moon className="h-4 w-4 mr-2" />}
+                    {theme === "dark" ? "Light" : "Dark"} Mode
+                  </Button>
                   <Button 
                     onClick={() => {
                       setIsMobileMenuOpen(false);
                       scrollToSection('cta');
                     }}
-                    className="button-gradient mt-4"
+                    className="button-gradient"
                   >
-                    Start Trading
+                    Get Started
                   </Button>
                 </div>
               </SheetContent>

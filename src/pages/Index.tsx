@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Command } from "lucide-react";
+import { ArrowRight, FileText, Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import { FeaturesSection } from "@/components/features/FeaturesSection";
 import { PricingSection } from "@/components/pricing/PricingSection";
+import { WorkflowSection } from "@/components/WorkflowSection";
+import { ScenariosSection } from "@/components/ScenariosSection";
+import { ApiDocumentation } from "@/components/ApiDocumentation";
 import LogoCarousel from "@/components/LogoCarousel";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import Footer from "@/components/Footer";
@@ -33,19 +36,19 @@ const Index = () => {
           className="inline-block mb-4 px-4 py-1.5 rounded-full glass"
         >
           <span className="text-sm font-medium">
-            <Command className="w-4 h-4 inline-block mr-2" />
-            Next-gen crypto trading platform
+            <FileText className="w-4 h-4 inline-block mr-2" />
+            Professional Invoice PDF Generator API
           </span>
         </motion.div>
         
         <div className="max-w-4xl relative z-10">
           <h1 className="text-5xl md:text-7xl font-normal mb-4 tracking-tight text-left">
             <span className="text-gray-200">
-              <TextGenerateEffect words="Trade crypto with" />
+              <TextGenerateEffect words="Design invoices," />
             </span>
             <br />
             <span className="text-white font-medium">
-              <TextGenerateEffect words="confidence & security" />
+              <TextGenerateEffect words="generate PDFs instantly" />
             </span>
           </h1>
           
@@ -55,8 +58,8 @@ const Index = () => {
             transition={{ delay: 0.4 }}
             className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl text-left"
           >
-            Experience seamless cryptocurrency trading with advanced features, real-time analytics, and institutional-grade security.{" "}
-            <span className="text-white">Start trading in minutes.</span>
+            Create beautiful invoice templates with our designer, then use our API to generate professional PDFs instantly. {" "}
+            <span className="text-white">Pay only for what you use with our coin system.</span>
           </motion.p>
           
           <motion.div
@@ -66,10 +69,11 @@ const Index = () => {
             className="flex flex-col sm:flex-row gap-4 items-start"
           >
             <Button size="lg" className="button-gradient">
-              Start Trading Now
+              <Palette className="mr-2 w-4 h-4" />
+              Start Designing
             </Button>
             <Button size="lg" variant="link" className="text-white">
-              View Markets <ArrowRight className="ml-2 w-4 h-4" />
+              View API Docs <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
           </motion.div>
         </div>
@@ -81,10 +85,19 @@ const Index = () => {
           className="relative mx-auto max-w-5xl mt-20"
         >
           <div className="glass rounded-xl overflow-hidden">
-            <img
+            <motion.img
               src="/lovable-uploads/c32c6788-5e4a-4fee-afee-604b03113c7f.png"
-              alt="CryptoTrade Dashboard"
+              alt="Invoice Designer Interface"
               className="w-full h-auto"
+              animate={{ 
+                y: [0, -10, 0],
+                scale: [1, 1.02, 1]
+              }}
+              transition={{ 
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
             />
           </div>
         </motion.div>
@@ -92,6 +105,11 @@ const Index = () => {
 
       {/* Logo Carousel */}
       <LogoCarousel />
+
+      {/* Workflow Section */}
+      <div id="workflow" className="bg-black">
+        <WorkflowSection />
+      </div>
 
       {/* Features Section */}
       <div id="features" className="bg-black">
@@ -101,6 +119,16 @@ const Index = () => {
       {/* Pricing Section */}
       <div id="pricing" className="bg-black">
         <PricingSection />
+      </div>
+
+      {/* Scenarios Section */}
+      <div id="scenarios" className="bg-black">
+        <ScenariosSection />
+      </div>
+
+      {/* API Documentation */}
+      <div className="bg-black">
+        <ApiDocumentation />
       </div>
 
       {/* Testimonials Section */}
@@ -125,13 +153,14 @@ const Index = () => {
           className="bg-[#0A0A0A]/80 backdrop-blur-lg border border-white/10 rounded-2xl p-8 md:p-12 text-center relative z-10"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to start trading?
+            Ready to start creating invoices?
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join thousands of traders who have already discovered the power of our platform.
+            Join thousands of businesses who generate professional PDFs with our API service.
           </p>
           <Button size="lg" className="button-gradient">
-            Create Account
+            <Palette className="mr-2 w-4 h-4" />
+            Start Designing
             <ArrowRight className="ml-2 w-4 h-4" />
           </Button>
         </motion.div>
