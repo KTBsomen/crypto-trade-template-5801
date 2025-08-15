@@ -1,28 +1,28 @@
-import { BarChart3, ShieldCheck, Wallet, ArrowUpDown } from "lucide-react";
+import { Palette, Braces, Zap, Database } from "lucide-react";
 
 export const features = [
   {
-    title: "Advanced Trading Interface",
-    description: "Professional-grade trading tools with real-time market data and advanced charting capabilities.",
-    icon: <BarChart3 className="w-6 h-6" />,
-    image: "/lovable-uploads/86329743-ee49-4f2e-96f7-50508436273d.png"
+    title: "Template Designer",
+    description: "Design pixel-perfect invoice templates visually with sections, tables, and branding.",
+    icon: <Palette className="w-6 h-6" />,
+    image: "/lovable-uploads/c32c6788-5e4a-4fee-afee-604b03113c7f.png"
   },
   {
-    title: "Portfolio Management",
-    description: "Track your investments and monitor your gains with our comprehensive portfolio dashboard.",
-    icon: <Wallet className="w-6 h-6" />,
-    image: "/lovable-uploads/7335619d-58a9-41ad-a233-f7826f56f3e9.png"
+    title: "Dynamic Placeholders",
+    description: "Use placeholders like {{customer.name}} and {{items[].total}} to inject data at runtime.",
+    icon: <Braces className="w-6 h-6" />,
+    image: "/lovable-uploads/a2c0bb3a-a47b-40bf-ba26-d79f2f9e741b.png"
   },
   {
-    title: "Security & Verification",
-    description: "Industry-leading security measures with KYC verification process to protect your assets.",
-    icon: <ShieldCheck className="w-6 h-6" />,
-    image: "/lovable-uploads/b6436838-5c1a-419a-9cdc-1f9867df073d.png"
+    title: "Blazing-fast PDF API",
+    description: "Generate and retrieve PDF links in milliseconds with our scalable API.",
+    icon: <Zap className="w-6 h-6" />,
+    image: "/lovable-uploads/21f3edfb-62b5-4e35-9d03-7339d803b980.png"
   },
   {
-    title: "Performance Analytics",
-    description: "Detailed analytics and credit scoring system to help you make informed decisions.",
-    icon: <ArrowUpDown className="w-6 h-6" />,
-    image: "/lovable-uploads/79f2b901-8a4e-42a5-939f-fae0828e0aef.png"
+    title: "Storage & Webhooks",
+    description: "Store PDFs, set expirations, and get notified via webhooks when documents are ready.",
+    icon: <Database className="w-6 h-6" />,
+    image: "/lovable-uploads/0dbe1b75-2c74-4ff8-ba55-4be4d74abe72.png"
   }
 ];

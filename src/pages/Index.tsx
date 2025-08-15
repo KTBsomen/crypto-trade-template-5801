@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, FileText, Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
@@ -13,6 +13,9 @@ import Footer from "@/components/Footer";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 const Index = () => {
+  const { scrollYProgress } = useScroll();
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.6], [0.92, 1.05, 1.15]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, -80]);
   return (
     <div className="min-h-screen bg-black text-foreground">
       <Navigation />
@@ -22,85 +25,78 @@ const Index = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative container px-4 pt-40 pb-20"
+        className="relative container px-4 pt-32 pb-20"
       >
         {/* Background */}
         <div 
           className="absolute inset-0 -z-10 bg-[#0A0A0A]"
         />
-        
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="inline-block mb-4 px-4 py-1.5 rounded-full glass"
-        >
-          <span className="text-sm font-medium">
-            <FileText className="w-4 h-4 inline-block mr-2" />
-            Professional Invoice PDF Generator API
-          </span>
-        </motion.div>
-        
-        <div className="max-w-4xl relative z-10">
-          <h1 className="text-5xl md:text-7xl font-normal mb-4 tracking-tight text-left">
-            <span className="text-gray-200">
-              <TextGenerateEffect words="Design invoices," />
-            </span>
-            <br />
-            <span className="text-white font-medium">
-              <TextGenerateEffect words="generate PDFs instantly" />
-            </span>
-          </h1>
-          
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl text-left"
-          >
-            Create beautiful invoice templates with our designer, then use our API to generate professional PDFs instantly. {" "}
-            <span className="text-white">Pay only for what you use with our coin system.</span>
-          </motion.p>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4 items-start"
-          >
-            <Button size="lg" className="button-gradient">
-              <Palette className="mr-2 w-4 h-4" />
-              Start Designing
-            </Button>
-            <Button size="lg" variant="link" className="text-white">
-              View API Docs <ArrowRight className="ml-2 w-4 h-4" />
-            </Button>
-          </motion.div>
-        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="relative mx-auto max-w-5xl mt-20"
-        >
-          <div className="glass rounded-xl overflow-hidden">
-            <motion.img
-              src="/lovable-uploads/c32c6788-5e4a-4fee-afee-604b03113c7f.png"
-              alt="Invoice Designer Interface"
-              className="w-full h-auto"
-              animate={{ 
-                y: [0, -10, 0],
-                scale: [1, 1.02, 1]
-              }}
-              transition={{ 
-                duration: 6,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          {/* Left: Content */}
+          <div className="lg:col-span-7 max-w-3xl">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="inline-block mb-4 px-4 py-1.5 rounded-full glass"
+            >
+              <span className="text-sm font-medium">
+                <FileText className="w-4 h-4 inline-block mr-2" />
+                Professional Invoice PDF Generator API
+              </span>
+            </motion.div>
+
+            <h1 className="text-5xl md:text-7xl font-normal mb-4 tracking-tight text-left">
+              <span className="text-gray-200">
+                <TextGenerateEffect words="Design invoices," />
+              </span>
+              <br />
+              <span className="text-white font-medium">
+                <TextGenerateEffect words="generate PDFs instantly" />
+              </span>
+            </h1>
+
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl text-left"
+            >
+              Create beautiful invoice templates with our designer, then use our API to generate professional PDFs instantly. {" "}
+              <span className="text-white">Pay only for what you use with our coin system.</span>
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="flex flex-col sm:flex-row gap-4 items-start"
+            >
+              <Button size="lg" className="button-gradient">
+                <Palette className="mr-2 w-4 h-4" />
+                Start Designing
+              </Button>
+              <Button size="lg" variant="link" className="text-white">
+                View API Docs <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </motion.div>
           </div>
-        </motion.div>
+
+          {/* Right: Sticky Parallax Image */}
+          <div className="lg:col-span-5 hidden lg:block">
+            <div className="sticky top-24">
+              <div className="glass rounded-xl overflow-hidden">
+                <motion.img
+                  src="/lovable-uploads/c32c6788-5e4a-4fee-afee-604b03113c7f.png"
+                  alt="Invoice Designer Interface"
+                  className="w-full h-auto"
+                  style={{ scale, y, transformOrigin: 'right center' }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </motion.section>
 
       {/* Logo Carousel */}

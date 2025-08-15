@@ -52,8 +52,8 @@ const Navigation = () => {
     <header
       className={`fixed top-3.5 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 rounded-full ${
         isScrolled 
-          ? "h-14 bg-[#1B1B1B]/40 backdrop-blur-xl border border-white/10 scale-95 w-[90%] max-w-2xl" 
-          : "h-14 bg-[#1B1B1B] w-[95%] max-w-3xl"
+          ? "h-14 glass backdrop-blur-xl border w-[94%] max-w-6xl scale-95" 
+          : "h-14 glass w-[96%] max-w-7xl"
       }`}
     >
       <div className="mx-auto h-full px-6">
@@ -75,7 +75,7 @@ const Navigation = () => {
                     item.onClick();
                   }
                 }}
-                className="text-sm text-muted-foreground hover:text-foreground transition-all duration-300"
+                className="text-sm whitespace-nowrap text-muted-foreground hover:text-foreground transition-all duration-300"
               >
                 {item.name}
               </a>
@@ -105,7 +105,7 @@ const Navigation = () => {
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent className="bg-[#1B1B1B]">
+              <SheetContent className="bg-background">
                 <div className="flex flex-col gap-4 mt-8">
                   {navItems.map((item) => (
                     <a
