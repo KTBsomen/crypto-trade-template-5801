@@ -63,7 +63,7 @@
 }
 
 .glass {
-  @apply bg-white/5 backdrop-blur-lg dark:bg-white/5 light:bg-black/5;
+  @apply bg-black/5 backdrop-blur-lg dark:bg-white/5;
   border: 1px solid transparent;
   background-clip: padding-box;
   position: relative;
@@ -75,7 +75,7 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(225deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+  background: linear-gradient(225deg, rgba(0,0,0,0.2), rgba(0,0,0,0.05));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
@@ -83,12 +83,12 @@
   pointer-events: none;
 }
 
-.light .glass::before {
-  background: linear-gradient(225deg, rgba(0,0,0,0.2), rgba(0,0,0,0.05));
+.dark .glass::before {
+  background: linear-gradient(225deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
 }
 
 .glass-hover {
-  @apply transition-all duration-300 hover:bg-white/10 dark:hover:bg-white/10 light:hover:bg-black/10;
+  @apply transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/10;
 }
 
 .text-gradient {
