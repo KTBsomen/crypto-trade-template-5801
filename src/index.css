@@ -28,6 +28,28 @@
     --ring: 142 84% 58%;
     --radius: 0.75rem;
   }
+
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 355 7% 97%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 142 76% 36%;
+  }
 }
 
 @layer base {
@@ -41,7 +63,7 @@
 }
 
 .glass {
-  @apply bg-white/5 backdrop-blur-lg;
+  @apply bg-white/5 backdrop-blur-lg dark:bg-white/5 light:bg-black/5;
   border: 1px solid transparent;
   background-clip: padding-box;
   position: relative;
@@ -61,8 +83,12 @@
   pointer-events: none;
 }
 
+.light .glass::before {
+  background: linear-gradient(225deg, rgba(0,0,0,0.2), rgba(0,0,0,0.05));
+}
+
 .glass-hover {
-  @apply transition-all duration-300 hover:bg-white/10;
+  @apply transition-all duration-300 hover:bg-white/10 dark:hover:bg-white/10 light:hover:bg-black/10;
 }
 
 .text-gradient {
@@ -71,4 +97,11 @@
 
 .button-gradient {
   @apply bg-gradient-to-r from-primary to-[#22c55e] hover:opacity-90 transition-opacity rounded-full;
+}
+
+/* Scroll animations for better performance */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
