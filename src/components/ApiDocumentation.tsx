@@ -4,8 +4,6 @@ import { Copy, Check, Code2, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const CodeBlock = ({ code, language }: { code: string; language: string }) => {
   const [copied, setCopied] = useState(false);
@@ -21,23 +19,14 @@ const CodeBlock = ({ code, language }: { code: string; language: string }) => {
       <Button
         variant="outline"
         size="sm"
-        className="absolute top-4 right-4 z-10"
+        className="absolute top-4 right-4 z-10 glass"
         onClick={copyToClipboard}
       >
         {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
       </Button>
-      <SyntaxHighlighter
-        language={language}
-        style={oneDark}
-        customStyle={{
-          borderRadius: '0.5rem',
-          padding: '1.5rem',
-          fontSize: '0.875rem',
-          lineHeight: '1.5'
-        }}
-      >
-        {code}
-      </SyntaxHighlighter>
+      <pre className="glass rounded-lg p-6 overflow-x-auto text-sm font-mono">
+        <code className="text-foreground whitespace-pre-wrap">{code}</code>
+      </pre>
     </div>
   );
 };
@@ -183,14 +172,14 @@ curl_close($ch);
           API{" "}
           <span className="text-gradient font-medium">Documentation</span>
         </h2>
-        <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Simple REST API to generate PDFs from your templates. Just send the data and get your PDF back instantly.
         </p>
       </motion.div>
 
       <div className="max-w-4xl mx-auto space-y-8">
         {/* API Endpoint */}
-        <Card className="bg-gradient-to-b from-neutral-900 to-neutral-950 border-white/10">
+        <Card className="glass">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Terminal className="w-5 h-5 text-primary" />
@@ -198,15 +187,15 @@ curl_close($ch);
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-black/50 rounded-lg p-4 font-mono text-sm">
-              <span className="text-green-400">POST</span>{" "}
-              <span className="text-blue-400">https://api.invoicepdf.com/v1/generate</span>
+            <div className="glass rounded-lg p-4 font-mono text-sm">
+              <span className="text-primary">POST</span>{" "}
+              <span className="text-foreground">https://api.invoicepdf.com/v1/generate</span>
             </div>
           </CardContent>
         </Card>
 
         {/* Code Examples */}
-        <Card className="bg-gradient-to-b from-neutral-900 to-neutral-950 border-white/10">
+        <Card className="glass">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Code2 className="w-5 h-5 text-primary" />
@@ -215,7 +204,7 @@ curl_close($ch);
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="curl" className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-4 glass">
                 <TabsTrigger value="curl">cURL</TabsTrigger>
                 <TabsTrigger value="javascript">JavaScript</TabsTrigger>
                 <TabsTrigger value="python">Python</TabsTrigger>
@@ -238,7 +227,7 @@ curl_close($ch);
         </Card>
 
         {/* Response Example */}
-        <Card className="bg-gradient-to-b from-neutral-900 to-neutral-950 border-white/10">
+        <Card className="glass">
           <CardHeader>
             <CardTitle>Response Example</CardTitle>
           </CardHeader>
@@ -248,17 +237,17 @@ curl_close($ch);
         </Card>
 
         {/* Authentication */}
-        <Card className="bg-gradient-to-b from-neutral-900 to-neutral-950 border-white/10">
+        <Card className="glass">
           <CardHeader>
             <CardTitle>Authentication</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-400 mb-4">
+            <p className="text-muted-foreground mb-4">
               Include your API key in the Authorization header as a Bearer token:
             </p>
-            <div className="bg-black/50 rounded-lg p-4 font-mono text-sm">
-              <span className="text-blue-400">Authorization:</span>{" "}
-              <span className="text-green-400">Bearer YOUR_API_KEY</span>
+            <div className="glass rounded-lg p-4 font-mono text-sm">
+              <span className="text-primary">Authorization:</span>{" "}
+              <span className="text-foreground">Bearer YOUR_API_KEY</span>
             </div>
           </CardContent>
         </Card>
