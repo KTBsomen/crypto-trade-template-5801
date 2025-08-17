@@ -4,6 +4,7 @@ import { Copy, Check, Code2, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Highlight, themes } from "prism-react-renderer";
 
 const CodeBlock = ({ code, language }: { code: string; language: string }) => {
   const [copied, setCopied] = useState(false);
@@ -24,9 +25,23 @@ const CodeBlock = ({ code, language }: { code: string; language: string }) => {
       >
         {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
       </Button>
-      <pre className="glass rounded-lg p-6 overflow-x-auto text-sm font-mono">
-        <code className="text-foreground whitespace-pre-wrap">{code}</code>
-      </pre>
+      <Highlight
+        theme={themes.oneDark}
+        code={code}
+        language={language as any}
+      >
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <pre className={`${className} glass rounded-lg p-6 overflow-x-auto text-sm font-mono`} style={style}>
+            {tokens.map((line, i) => (
+              <div key={i} {...getLineProps({ line })}>
+                {line.map((token, key) => (
+                  <span key={key} {...getTokenProps({ token })} />
+                ))}
+              </div>
+            ))}
+          </pre>
+        )}
+      </Highlight>
     </div>
   );
 };

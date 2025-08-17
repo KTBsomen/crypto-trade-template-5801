@@ -1,38 +1,76 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { FeatureContent } from "./FeatureContent";
 import { features } from "@/config/features";
 
 export const FeaturesSection = () => {
   const [activeFeature, setActiveFeature] = useState(0);
+  const [isScrolling, setIsScrolling] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const featureRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const lastScrollTime = useRef(0);
+
+  const scrollToFeature = useCallback((index: number) => {
+    if (!sectionRef.current) return;
+    
+    const sectionRect = sectionRef.current.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    const featureHeight = sectionRect.height / features.length;
+    const targetScroll = window.scrollY + sectionRect.top + (featureHeight * index) - (windowHeight * 0.2);
+    
+    setIsScrolling(true);
+    window.scrollTo({
+      top: targetScroll,
+      behavior: 'smooth'
+    });
+    
+    setTimeout(() => setIsScrolling(false), 800);
+  }, []);
 
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      if (!sectionRef.current) return;
+      if (!ticking && !isScrolling) {
+        requestAnimationFrame(() => {
+          if (!sectionRef.current) return;
 
-      const sectionRect = sectionRef.current.getBoundingClientRect();
-      const sectionTop = sectionRect.top;
-      const sectionBottom = sectionRect.bottom;
-      const windowHeight = window.innerHeight;
+          const sectionRect = sectionRef.current.getBoundingClientRect();
+          const sectionTop = sectionRect.top;
+          const sectionBottom = sectionRect.bottom;
+          const windowHeight = window.innerHeight;
 
-      // Check if we're in the features section
-      if (sectionTop <= windowHeight * 0.5 && sectionBottom >= windowHeight * 0.5) {
-        // Calculate which feature should be active based on scroll position
-        const scrollProgress = (windowHeight * 0.5 - sectionTop) / (sectionRect.height - windowHeight);
-        const featureIndex = Math.floor(scrollProgress * features.length);
-        const clampedIndex = Math.max(0, Math.min(features.length - 1, featureIndex));
-        
-        if (clampedIndex !== activeFeature) {
-          setActiveFeature(clampedIndex);
-        }
+          // Check if we're in the features section
+          if (sectionTop <= windowHeight * 0.6 && sectionBottom >= windowHeight * 0.4) {
+            // Calculate which feature should be active based on scroll position
+            const scrollProgress = Math.max(0, (windowHeight * 0.5 - sectionTop) / (sectionRect.height - windowHeight));
+            const featureIndex = Math.floor(scrollProgress * features.length);
+            const clampedIndex = Math.max(0, Math.min(features.length - 1, featureIndex));
+            
+            if (clampedIndex !== activeFeature) {
+              setActiveFeature(clampedIndex);
+            }
+          }
+          
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeFeature]);
+    // Throttled scroll handler for smooth performance
+    let scrollTimeout: NodeJS.Timeout;
+    const throttledScroll = () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(handleScroll, 16); // ~60fps
+    };
+
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', throttledScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, [activeFeature, isScrolling]);
 
   return (
     <section ref={sectionRef} className="container px-4 py-24 min-h-screen">

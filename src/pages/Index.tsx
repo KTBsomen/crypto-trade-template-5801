@@ -13,10 +13,16 @@ import Footer from "@/components/Footer";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 const Index = () => {
+  const { scrollY } = useScroll();
   const { scrollYProgress } = useScroll();
-  const scale = useTransform(scrollYProgress, [0, 0.2, 0.4, 0.6], [0.8, 1, 1.1, 1.2]);
-  const y = useTransform(scrollYProgress, [0, 0.3, 0.6, 1], [50, 0, -20, -60]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.7, 1, 1, 0.8]);
+  
+  // Enhanced parallax transforms for the main image
+  const imageScale = useTransform(scrollY, [0, 300, 800, 1200], [0.6, 0.9, 1.2, 1.4]);
+  const imageY = useTransform(scrollY, [0, 400, 800, 1200], [100, 20, -30, -80]);
+  const imageOpacity = useTransform(scrollY, [0, 100, 600, 1000, 1400], [0.6, 1, 1, 0.9, 0.7]);
+  const imageX = useTransform(scrollY, [0, 400, 800], [60, 20, 0]);
+  const imageWidth = useTransform(scrollY, [0, 300, 800, 1200], [280, 320, 400, 450]);
+  const imageHeight = useTransform(scrollY, [0, 300, 800, 1200], [280, 320, 400, 450]);
   return (
     <div className="min-h-screen bg-black text-foreground">
       <Navigation />
@@ -105,29 +111,36 @@ const Index = () => {
             </motion.div>
           </div>
 
-          {/* Right: Enhanced Parallax Image */}
-          <div className="lg:col-span-4 hidden lg:block">
-            <div className="sticky top-24 h-screen flex items-center">
+          {/* Right: Advanced Parallax Image */}
+          <div className="lg:col-span-4 hidden lg:block relative">
+            <motion.div 
+              className="fixed right-8 top-1/2 transform -translate-y-1/2 z-10"
+              style={{
+                scale: imageScale,
+                y: imageY,
+                opacity: imageOpacity,
+                x: imageX,
+                transformOrigin: 'center right'
+              }}
+              initial={{ opacity: 0, scale: 0.5, x: 100 }}
+              animate={{ opacity: 0.6, scale: 0.6, x: 60 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+            >
               <motion.div 
-                className="glass rounded-2xl overflow-hidden shadow-2xl shadow-primary/10"
-                style={{ 
-                  scale,
-                  y,
-                  opacity,
-                  transformOrigin: 'center'
+                className="glass rounded-2xl overflow-hidden shadow-2xl shadow-primary/20"
+                style={{
+                  width: imageWidth,
+                  height: imageHeight
                 }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent z-10" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/15 to-transparent z-10" />
                 <img
                   src="/lovable-uploads/c32c6788-5e4a-4fee-afee-604b03113c7f.png"
                   alt="Enterprise Invoice Designer"
-                  className="w-full h-auto relative z-0"
+                  className="w-full h-full object-contain relative z-0"
                 />
               </motion.div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </motion.section>
