@@ -13,8 +13,8 @@ const App = () => (
     <ThemeProvider
       attribute="class"
       defaultTheme="dark"
-      enableSystem
-      disableTransitionOnChange
+      enableSystem={false}
+      storageKey="invoicepdf-theme"
     >
       <TooltipProvider>
         <div className="min-h-screen bg-background">

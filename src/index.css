@@ -63,32 +63,15 @@
 }
 
 .glass {
-  @apply bg-black/5 backdrop-blur-lg dark:bg-white/5;
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  position: relative;
+  @apply bg-card/10 backdrop-blur-xl border border-border/30;
 }
 
-.glass::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(225deg, rgba(0,0,0,0.2), rgba(0,0,0,0.05));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-.dark .glass::before {
-  background: linear-gradient(225deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+.glass-subtle {
+  @apply bg-card/5 backdrop-blur-lg border border-border/20;
 }
 
 .glass-hover {
-  @apply transition-all duration-300 hover:bg-black/10 dark:hover:bg-white/10;
+  @apply bg-card/15 backdrop-blur-xl border border-border/40 transition-all duration-300;
 }
 
 .text-gradient {
