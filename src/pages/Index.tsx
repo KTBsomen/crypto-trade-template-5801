@@ -11,24 +11,36 @@ import LogoCarousel from "@/components/LogoCarousel";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import Footer from "@/components/Footer";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import { useEffect, useRef, useState } from "react";
 
 const Index = () => {
+  const heroRef = useRef<HTMLElement>(null);
+  const [showSticky, setShowSticky] = useState(false);
   const { scrollY } = useScroll();
   const { scrollYProgress } = useScroll();
+  useEffect(() => {
+    const onScroll = () => {
+      if (!heroRef.current) return;
+      const rect = heroRef.current.getBoundingClientRect();
+      setShowSticky(rect.bottom <= 100);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   
   // Enhanced parallax transforms for the main image
-  const imageScale = useTransform(scrollY, [0, 300, 800, 1200], [0.6, 0.9, 1.2, 1.4]);
-  const imageY = useTransform(scrollY, [0, 400, 800, 1200], [100, 20, -30, -80]);
-  const imageOpacity = useTransform(scrollY, [0, 100, 600, 1000, 1400], [0.6, 1, 1, 0.9, 0.7]);
-  const imageX = useTransform(scrollY, [0, 400, 800], [60, 20, 0]);
-  const imageWidth = useTransform(scrollY, [0, 300, 800, 1200], [280, 320, 400, 450]);
-  const imageHeight = useTransform(scrollY, [0, 300, 800, 1200], [280, 320, 400, 450]);
+  const imageScale = useTransform(scrollY, [0, 300, 800, 1200], [0.6, 0.9, 1.0, 1.1]);
+  const imageY = useTransform(scrollY, [0, 400, 800, 1200], [60, 10, -10, -20]);
+  const imageOpacity = useTransform(scrollY, [0, 100, 600], [0.9, 1, 0.9]);
+  const imageX = useTransform(scrollY, [0, 400, 800], [0, 0, 0]);
   return (
     <div className="min-h-screen bg-black text-foreground">
       <Navigation />
       
       {/* Hero Section */}
       <motion.section 
+        ref={heroRef}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -111,27 +123,23 @@ const Index = () => {
             </motion.div>
           </div>
 
-          {/* Right: Advanced Parallax Image */}
+          {/* Right: Parallax Image that grows then parks below hero */}
           <div className="lg:col-span-4 hidden lg:block relative">
             <motion.div 
-              className="fixed right-8 top-1/2 transform -translate-y-1/2 z-10"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10"
               style={{
                 scale: imageScale,
                 y: imageY,
-                opacity: imageOpacity,
+                opacity: showSticky ? 0 : imageOpacity,
                 x: imageX,
                 transformOrigin: 'center right'
               }}
-              initial={{ opacity: 0, scale: 0.5, x: 100 }}
-              animate={{ opacity: 0.6, scale: 0.6, x: 60 }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
+              initial={{ opacity: 0, scale: 0.5, x: 60 }}
+              animate={{ opacity: 0.9 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <motion.div 
-                className="glass rounded-2xl overflow-hidden shadow-2xl shadow-primary/20"
-                style={{
-                  width: imageWidth,
-                  height: imageHeight
-                }}
+              <div 
+                className="glass rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 w-[380px] h-[380px]"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/15 to-transparent z-10" />
                 <img
@@ -139,11 +147,27 @@ const Index = () => {
                   alt="Enterprise Invoice Designer"
                   className="w-full h-full object-contain relative z-0"
                 />
-              </motion.div>
+              </div>
             </motion.div>
           </div>
         </div>
       </motion.section>
+
+      {/* Sticky Image below Hero */}
+      {showSticky && (
+        <section className="container px-4 pb-10 hidden lg:block">
+          <div className="ml-auto">
+            <div className="glass rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 w-[420px] h-[420px]">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 to-transparent z-10" />
+              <img
+                src="/lovable-uploads/c32c6788-5e4a-4fee-afee-604b03113c7f.png"
+                alt="Enterprise Invoice Designer"
+                className="w-full h-full object-contain relative z-0"
+              />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Logo Carousel */}
       <LogoCarousel />
