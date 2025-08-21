@@ -11,6 +11,8 @@ export const FeaturesSection = () => {
   const total = features.length;
   const [mode, setMode] = useState<'idle' | 'active' | 'done'>('idle');
   const lastScrollY = useRef<number>(0);
+  const SNAP_COOLDOWN = 500;
+  const lastSnapRef = useRef<number>(0);
 
   const scrollToIndex = useCallback((index: number) => {
     if (!sectionRef.current) return;
@@ -31,7 +33,7 @@ export const FeaturesSection = () => {
       const rect = sectionRef.current.getBoundingClientRect();
       const sectionTopAbs = window.scrollY + rect.top;
       const progress = (window.scrollY - sectionTopAbs) / window.innerHeight;
-      const idx = Math.min(total - 1, Math.max(0, Math.round(progress)));
+      const idx = Math.min(total - 1, Math.max(0, Math.floor(progress + 0.0001)));
       if (idx !== activeFeature) setActiveFeature(idx);
     };
 
@@ -63,7 +65,9 @@ export const FeaturesSection = () => {
       ) {
         setMode("active");
         setActiveFeature(0);
+        setIsAnimating(true);
         window.scrollTo({ top: sectionTopAbs, behavior: "smooth" });
+        window.setTimeout(() => setIsAnimating(false), 500);
       }
 
       lastScrollY.current = window.scrollY;
@@ -76,38 +80,44 @@ export const FeaturesSection = () => {
 
   // Intercept wheel inside the section to snap between features when active
   const handleWheel = (e: React.WheelEvent) => {
-    if (!sectionRef.current || isAnimating) return;
+    if (!sectionRef.current) return;
     if (mode !== "active") return;
 
     const rect = sectionRef.current.getBoundingClientRect();
-    // Only intercept when the section's center crosses the viewport
-    const inView = rect.top <= window.innerHeight * 0.6 && rect.bottom >= window.innerHeight * 0.4;
-    if (!inView) return;
-
     const sectionTopAbs = window.scrollY + rect.top;
     const currentSnapTop = sectionTopAbs + activeFeature * window.innerHeight;
     const sectionBottomAbs = sectionTopAbs + total * window.innerHeight;
 
-    // Allow normal scroll to exit upward at the first feature
-    if (activeFeature === 0 && e.deltaY < 0 && window.scrollY <= currentSnapTop + 2) {
-      setMode("idle");
-      return; // do not prevent default
-    }
-
-    // Release interception after last feature and continue
-    if (activeFeature === total - 1 && e.deltaY > 0 && window.scrollY >= currentSnapTop - 2) {
-      setMode("done");
-      setIsAnimating(true);
-      window.scrollTo({ top: sectionBottomAbs, behavior: "auto" });
-      window.setTimeout(() => setIsAnimating(false), 400);
-      return;
-    }
-
+    // Always block native scroll while animating or active
     e.preventDefault();
     e.stopPropagation();
 
+    // Allow natural exit upward at the very first snap
+    if (activeFeature === 0 && e.deltaY < 0 && window.scrollY <= currentSnapTop + 2) {
+      setMode("idle");
+      return;
+    }
+
+    // Release after last feature: smoothly scroll to section end then disable
+    if (activeFeature === total - 1 && e.deltaY > 0 && window.scrollY >= currentSnapTop - 2) {
+      setIsAnimating(true);
+      window.scrollTo({ top: sectionBottomAbs, behavior: "smooth" });
+      window.setTimeout(() => {
+        setIsAnimating(false);
+        setMode("done");
+      }, 600);
+      return;
+    }
+
+    // Debounce snaps to avoid fast skipping
+    const now = Date.now();
+    if (isAnimating || now - (lastSnapRef.current || 0) < SNAP_COOLDOWN) return;
+
     const next = e.deltaY > 0 ? Math.min(total - 1, activeFeature + 1) : Math.max(0, activeFeature - 1);
-    if (next !== activeFeature) scrollToIndex(next);
+    if (next !== activeFeature) {
+      lastSnapRef.current = now;
+      scrollToIndex(next);
+    }
   };
 
   return (

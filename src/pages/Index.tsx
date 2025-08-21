@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence, useMotionValueEvent } from "framer-motion";
 import { ArrowRight, FileText, Palette, Zap, Shield, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
@@ -16,9 +16,15 @@ import { useEffect, useRef, useState } from "react";
 const Index = () => {
   const heroRef = useRef<HTMLElement>(null);
   const [showSticky, setShowSticky] = useState(false);
+  const [isParked, setIsParked] = useState(false);
   const { scrollY } = useScroll();
   const { scrollYProgress } = useScroll();
-  useEffect(() => {
+useMotionValueEvent(scrollY, "change", (latest) => {
+  // Toggle when hero image should park into the next section
+  setIsParked(latest >= 700);
+});
+
+useEffect(() => {
     const onScroll = () => {
       if (!heroRef.current) return;
       const rect = heroRef.current.getBoundingClientRect();
@@ -127,29 +133,31 @@ const Index = () => {
 
           {/* Right: Parallax Image that grows then parks below hero */}
           <div className="lg:col-span-4 hidden lg:block relative">
-            <motion.div 
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10"
-              style={{
-                scale: imageScale,
-                y: imageY,
-                opacity: imageOpacity,
-                x: imageX,
-                transformOrigin: 'center right'
-              }}
-              initial={{ opacity: 0, scale: 0.5, x: 60 }}
-              animate={{ opacity: 0.9 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <div 
-                className="glass rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 w-[380px] h-[380px]"
+            {!isParked && (
+              <motion.div 
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10"
+                style={{
+                  scale: imageScale,
+                  y: imageY,
+                  opacity: imageOpacity,
+                  transformOrigin: 'center right'
+                }}
+                initial={{ opacity: 0, scale: 0.5, x: 60 }}
+                animate={{ opacity: 0.95 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                layoutId="productImage"
               >
-                <img
-                  src="/lovable-uploads/c32c6788-5e4a-4fee-afee-604b03113c7f.png"
-                  alt="Enterprise Invoice Designer"
-                  className="w-full h-full object-contain"
-                />
-              </div>
-            </motion.div>
+                <div 
+                  className="glass rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 w-[380px] h-[380px]"
+                >
+                  <img
+                    src="/lovable-uploads/c32c6788-5e4a-4fee-afee-604b03113c7f.png"
+                    alt="Enterprise Invoice Designer"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </motion.div>
+            )}
           </div>
         </div>
       </motion.section>
