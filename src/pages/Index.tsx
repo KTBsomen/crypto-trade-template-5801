@@ -30,9 +30,9 @@ const Index = () => {
   }, []);
   
   // Enhanced parallax transforms for the main image
-  const imageScale = useTransform(scrollY, [0, 300, 800, 1200], [0.6, 0.9, 1.0, 1.1]);
-  const imageY = useTransform(scrollY, [0, 400, 800, 1200], [60, 10, -10, -20]);
-  const imageOpacity = useTransform(scrollY, [0, 100, 600], [0.9, 1, 0.9]);
+  const imageScale = useTransform(scrollY, [0, 400, 900], [0.8, 1.05, 1.2]);
+  const imageY = useTransform(scrollY, [0, 400, 900], [0, 120, 240]);
+  const imageOpacity = useTransform(scrollY, [0, 300, 800], [1, 1, 0.0]);
   const imageX = useTransform(scrollY, [0, 400, 800], [0, 0, 0]);
   return (
     <div className="min-h-screen bg-black text-foreground">
@@ -130,7 +130,7 @@ const Index = () => {
               style={{
                 scale: imageScale,
                 y: imageY,
-                opacity: showSticky ? 0 : imageOpacity,
+                opacity: imageOpacity,
                 x: imageX,
                 transformOrigin: 'center right'
               }}
@@ -153,21 +153,20 @@ const Index = () => {
         </div>
       </motion.section>
 
-      {/* Sticky Image below Hero */}
-      {showSticky && (
-        <section className="container px-4 pb-10 hidden lg:block">
-          <div className="ml-auto">
-            <div className="glass rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 w-[420px] h-[420px]">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 to-transparent z-10" />
-              <img
-                src="/lovable-uploads/c32c6788-5e4a-4fee-afee-604b03113c7f.png"
-                alt="Enterprise Invoice Designer"
-                className="w-full h-full object-contain relative z-0"
-              />
-            </div>
+      {/* Image Section parked below Hero (always rendered) */}
+      <section className="container px-4 py-16 hidden lg:block">
+        <div className="mx-auto flex items-center justify-center">
+          <div className="glass rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 w-full max-w-4xl h-[60vh]">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/15 to-transparent z-10" />
+            <img
+              src="/lovable-uploads/c32c6788-5e4a-4fee-afee-604b03113c7f.png"
+              alt="Enterprise Invoice Designer"
+              className="w-full h-full object-contain relative z-0"
+              loading="lazy"
+            />
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* Logo Carousel */}
       <LogoCarousel />

@@ -18,6 +18,16 @@ export const CoinCalculator = () => {
     setter(Math.max(min, current + change));
   };
 
+  const handleEditableNumberChange = (
+    e: React.FormEvent<HTMLDivElement>,
+    setter: React.Dispatch<React.SetStateAction<number>>,
+    min = 0
+  ) => {
+    const text = (e.currentTarget.textContent || "").replace(/[^0-9]/g, "");
+    const num = parseInt(text || "0", 10);
+    setter(Math.max(min, isNaN(num) ? 0 : num));
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -52,7 +62,14 @@ export const CoinCalculator = () => {
                 <Minus className="w-4 h-4" />
               </Button>
               <div className="flex-1 text-center">
-                <div className="text-2xl font-bold">{pdfRequests}</div>
+                <div
+                  className="text-2xl font-bold outline-none focus:ring-2 focus:ring-primary/50 rounded"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onInput={(e) => handleEditableNumberChange(e, setPdfRequests, 0)}
+                >
+                  {pdfRequests}
+                </div>
                 <div className="text-xs text-gray-400">{pdfRequests * coinsPerPdf} coins</div>
               </div>
               <Button
@@ -82,7 +99,14 @@ export const CoinCalculator = () => {
                 <Minus className="w-4 h-4" />
               </Button>
               <div className="flex-1 text-center">
-                <div className="text-2xl font-bold">{aiCalls}</div>
+                <div
+                  className="text-2xl font-bold outline-none focus:ring-2 focus:ring-primary/50 rounded"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onInput={(e) => handleEditableNumberChange(e, setAiCalls, 0)}
+                >
+                  {aiCalls}
+                </div>
                 <div className="text-xs text-gray-400">{aiCalls * coinsPerAi} coins</div>
               </div>
               <Button
