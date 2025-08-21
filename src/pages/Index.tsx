@@ -143,11 +143,10 @@ const Index = () => {
               <div 
                 className="glass rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 w-[380px] h-[380px]"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/15 to-transparent z-10" />
                 <img
                   src="/lovable-uploads/c32c6788-5e4a-4fee-afee-604b03113c7f.png"
                   alt="Enterprise Invoice Designer"
-                  className="w-full h-full object-contain relative z-0"
+                  className="w-full h-full object-contain"
                 />
               </div>
             </motion.div>

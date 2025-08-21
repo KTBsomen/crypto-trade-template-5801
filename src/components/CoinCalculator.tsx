@@ -72,7 +72,7 @@ export const CoinCalculator = () => {
                 variant="outline"
                 size="icon"
                 className="h-8 w-8"
-                onClick={() => adjustValue(setPdfRequests, pdfRequests, -10)}
+                onClick={() => adjustValue(setPdfRequests, pdfRef, pdfRequests, -10)}
               >
                 <Minus className="w-4 h-4" />
               </Button>
@@ -81,7 +81,8 @@ export const CoinCalculator = () => {
                   className="text-2xl font-bold outline-none focus:ring-2 focus:ring-primary/50 rounded"
                   contentEditable
                   suppressContentEditableWarning
-                  onInput={(e) => handleEditableNumberChange(e, setPdfRequests, 0)}
+                  ref={pdfRef}
+                  onBlur={(e) => handleEditableNumberBlur(e, setPdfRequests, pdfRef, 0)}
                 >
                   {pdfRequests}
                 </div>
@@ -91,7 +92,7 @@ export const CoinCalculator = () => {
                 variant="outline"
                 size="icon"
                 className="h-8 w-8"
-                onClick={() => adjustValue(setPdfRequests, pdfRequests, 10)}
+                onClick={() => adjustValue(setPdfRequests, pdfRef, pdfRequests, 10)}
               >
                 <Plus className="w-4 h-4" />
               </Button>
@@ -109,7 +110,7 @@ export const CoinCalculator = () => {
                 variant="outline"
                 size="icon"
                 className="h-8 w-8"
-                onClick={() => adjustValue(setAiCalls, aiCalls, -5)}
+                onClick={() => adjustValue(setAiCalls, aiRef, aiCalls, -5)}
               >
                 <Minus className="w-4 h-4" />
               </Button>
@@ -118,7 +119,8 @@ export const CoinCalculator = () => {
                   className="text-2xl font-bold outline-none focus:ring-2 focus:ring-primary/50 rounded"
                   contentEditable
                   suppressContentEditableWarning
-                  onInput={(e) => handleEditableNumberChange(e, setAiCalls, 0)}
+                  ref={aiRef}
+                  onBlur={(e) => handleEditableNumberBlur(e, setAiCalls, aiRef, 0)}
                 >
                   {aiCalls}
                 </div>
@@ -128,7 +130,7 @@ export const CoinCalculator = () => {
                 variant="outline"
                 size="icon"
                 className="h-8 w-8"
-                onClick={() => adjustValue(setAiCalls, aiCalls, 5)}
+                onClick={() => adjustValue(setAiCalls, aiRef, aiCalls, 5)}
               >
                 <Plus className="w-4 h-4" />
               </Button>
