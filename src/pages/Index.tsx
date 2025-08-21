@@ -30,10 +30,12 @@ const Index = () => {
   }, []);
   
   // Enhanced parallax transforms for the main image
-  const imageScale = useTransform(scrollY, [0, 400, 900], [0.8, 1.05, 1.2]);
-  const imageY = useTransform(scrollY, [0, 400, 900], [0, 120, 240]);
-  const imageOpacity = useTransform(scrollY, [0, 300, 800], [1, 1, 0.0]);
+  const imageScale = useTransform(scrollY, [0, 500, 1100], [0.8, 1.15, 1.35]);
+  const imageY = useTransform(scrollY, [0, 500, 1100], [0, 220, 420]);
+  const imageOpacity = useTransform(scrollY, [0, 600, 1000], [1, 1, 0]);
   const imageX = useTransform(scrollY, [0, 400, 800], [0, 0, 0]);
+  const parkedOpacity = useTransform(scrollY, [600, 1000], [0, 1]);
+  const parkedY = useTransform(scrollY, [600, 1000], [60, 0]);
   return (
     <div className="min-h-screen bg-black text-foreground">
       <Navigation />
@@ -153,20 +155,22 @@ const Index = () => {
         </div>
       </motion.section>
 
-      {/* Image Section parked below Hero (always rendered) */}
-      <section className="container px-4 py-16 hidden lg:block">
+      {/* Image Section parked below Hero (appears on scroll) */}
+      <motion.section 
+        className="container px-4 py-24 hidden lg:block"
+        style={{ opacity: parkedOpacity, y: parkedY }}
+      >
         <div className="mx-auto flex items-center justify-center">
-          <div className="glass rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 w-full max-w-4xl h-[60vh]">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/15 to-transparent z-10" />
+          <div className="glass rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 w-full max-w-5xl h-[70vh]">
             <img
               src="/lovable-uploads/c32c6788-5e4a-4fee-afee-604b03113c7f.png"
-              alt="Enterprise Invoice Designer"
-              className="w-full h-full object-contain relative z-0"
+              alt="Enterprise Invoice Designer parked showcase"
+              className="w-full h-full object-contain"
               loading="lazy"
             />
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Logo Carousel */}
       <LogoCarousel />

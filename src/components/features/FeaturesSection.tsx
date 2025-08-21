@@ -20,7 +20,7 @@ export const FeaturesSection = () => {
 
     setIsAnimating(true);
     window.scrollTo({ top: target, behavior: "smooth" });
-    window.setTimeout(() => setIsAnimating(false), 600);
+    window.setTimeout(() => setIsAnimating(false), 800);
   }, []);
 
   // Derive active feature only while in 'active' mode
@@ -98,10 +98,8 @@ export const FeaturesSection = () => {
     if (activeFeature === total - 1 && e.deltaY > 0 && window.scrollY >= currentSnapTop - 2) {
       setMode("done");
       setIsAnimating(true);
-      window.scrollTo({ top: sectionBottomAbs, behavior: "smooth" });
-      window.setTimeout(() => setIsAnimating(false), 600);
-      e.preventDefault();
-      e.stopPropagation();
+      window.scrollTo({ top: sectionBottomAbs, behavior: "auto" });
+      window.setTimeout(() => setIsAnimating(false), 400);
       return;
     }
 
@@ -177,6 +175,20 @@ export const FeaturesSection = () => {
                   </motion.div>
                 );
               })}
+
+              {mode === "active" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="glass-subtle p-6 rounded-xl"
+                >
+                  <h4 className="font-medium mb-2">More about {features[activeFeature].title}</h4>
+                  <p className="text-sm text-muted-foreground">
+                    {features[activeFeature].description} Explore how this helps streamline enterprise invoicing workflows with security and compliance.
+                  </p>
+                </motion.div>
+              )}
             </div>
 
             {/* Right side - Feature content */}

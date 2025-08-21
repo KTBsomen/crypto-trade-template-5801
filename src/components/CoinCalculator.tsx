@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Plus, Minus, Calculator, Coins } from "lucide-react";
+import { Plus, Minus, Calculator, Coins, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -11,21 +11,36 @@ export const CoinCalculator = () => {
   const coinsPerPdf = 1;
   const coinsPerAi = 2;
   
+  const pdfRef = useRef<HTMLDivElement>(null);
+  const aiRef = useRef<HTMLDivElement>(null);
+  
   const totalCoins = (pdfRequests * coinsPerPdf) + (aiCalls * coinsPerAi);
   const estimatedCost = totalCoins * 0.02; // $0.02 per coin
 
-  const adjustValue = (setter: React.Dispatch<React.SetStateAction<number>>, current: number, change: number, min = 0) => {
-    setter(Math.max(min, current + change));
+  const adjustValue = (
+    setter: React.Dispatch<React.SetStateAction<number>>,
+    ref: React.RefObject<HTMLDivElement>,
+    current: number,
+    change: number,
+    min = 0
+  ) => {
+    const next = Math.max(min, current + change);
+    setter(next);
+    if (ref.current) ref.current.innerText = String(next);
   };
 
-  const handleEditableNumberChange = (
-    e: React.FormEvent<HTMLDivElement>,
+  const handleEditableNumberBlur = (
+    e: React.FocusEvent<HTMLDivElement>,
     setter: React.Dispatch<React.SetStateAction<number>>,
+    ref: React.RefObject<HTMLDivElement>,
     min = 0
   ) => {
     const text = (e.currentTarget.textContent || "").replace(/[^0-9]/g, "");
     const num = parseInt(text || "0", 10);
-    setter(Math.max(min, isNaN(num) ? 0 : num));
+    const next = Math.max(min, isNaN(num) ? 0 : num);
+    setter(next);
+    // Normalize displayed text to sanitized value
+    if (ref.current) ref.current.innerText = String(next);
   };
 
   return (
