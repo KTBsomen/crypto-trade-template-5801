@@ -3,6 +3,7 @@ import { Command, Menu, Sun, Moon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { useTheme } from "next-themes";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -88,12 +89,8 @@ const Navigation = () => {
             >
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
-            <Button 
-              onClick={() => scrollToSection('cta')}
-              size="sm"
-              className="button-gradient"
-            >
-              Get Started
+            <Button size="sm" className="button-gradient" asChild>
+              <Link to="/login">Get Started</Link>
             </Button>
           </div>
 
@@ -131,14 +128,10 @@ const Navigation = () => {
                     {theme === "dark" ? <Sun className="h-4 w-4 mr-2" /> : <Moon className="h-4 w-4 mr-2" />}
                     {theme === "dark" ? "Light" : "Dark"} Mode
                   </Button>
-                  <Button 
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      scrollToSection('cta');
-                    }}
-                    className="button-gradient"
-                  >
-                    Get Started
+                  <Button className="button-gradient" asChild>
+                    <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                      Get Started
+                    </Link>
                   </Button>
                 </div>
               </SheetContent>
